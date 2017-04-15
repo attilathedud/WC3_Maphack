@@ -7,6 +7,14 @@ A maphack for Warcraft 3 1.24d. WC3 sets the visibility of the map every frame v
 ```
 By changing the push 0 instruction to push 0fh, we reveal all the squares on the map. This method will cause a desync in multiplayer games.       
 
+The injector was written in C++ and compiled with VS6 but should compile with any modern C++ compiler.
+
+The hack was written in mASM and needs to be linked as a dll. To do this:
+```
+\masm32\bin\ml /c /coff WC3Maphack.asm
+\masm32\bin\Link /SUBSYSTEM:WINDOWS /DLL WC3Maphack.obj
+```
+
 Originally written 2010/02/16 by attilathedud.
 
 Injector:
