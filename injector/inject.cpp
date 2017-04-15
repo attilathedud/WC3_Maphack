@@ -15,18 +15,18 @@
 */
 void AdjustTokenPrivs( void )
 {
-	HANDLE token;
+    HANDLE token;
     LUID luid;
     TOKEN_PRIVILEGES tp;
 
-	OpenProcessToken(GetCurrentProcess(), TOKEN_ALL_ACCESS, &token);
-	LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &luid);
+    OpenProcessToken(GetCurrentProcess(), TOKEN_ALL_ACCESS, &token);
+    LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &luid);
 
-	tp.PrivilegeCount = 1;
+    tp.PrivilegeCount = 1;
     tp.Privileges[0].Luid = luid;
     tp.Privileges[0].Attributes = 2;
 
-	AdjustTokenPrivileges(token, FALSE, &tp, 28, NULL, NULL);
+    AdjustTokenPrivileges(token, FALSE, &tp, 28, NULL, NULL);
 }
 
 /*!
@@ -44,14 +44,14 @@ bool inject(char* dll)
     void *lpBaseAddress, *process;
 
     // Adjust our applications privilege to SE_DEBUG.
-	AdjustTokenPrivs();
+    AdjustTokenPrivs();
 	
     // Get WC3's process handle.
     GetWindowThreadProcessId(FindWindow(NULL, "Warcraft III"), (DWORD*)&process);
-	process = OpenProcess(PROCESS_ALL_ACCESS, true, (DWORD)process);
+    process = OpenProcess(PROCESS_ALL_ACCESS, true, (DWORD)process);
 
-	if(!process)
-		return false;
+    if(!process)
+        return false;
 
     // Allocate the space for our dll name inside the process.
     if(!(lpBaseAddress =  VirtualAllocEx(process, NULL, strlen(dll) + 1, MEM_COMMIT, PAGE_READWRITE)))
@@ -71,7 +71,7 @@ bool inject(char* dll)
     // Free the memory we allocated and close active handles.
     VirtualFreeEx(process, 0, strlen(dll)+1, MEM_DECOMMIT);
     CloseHandle((void*)thread);
-	CloseHandle(process);
+    CloseHandle(process);
 
     return true;
 }

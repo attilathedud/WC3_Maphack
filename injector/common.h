@@ -7,7 +7,7 @@
 #define WIN32_LEAN_AND_MEAN
 #define PI 3.14159
 
-// Contains a coordinate for each pixel activated on screen. The z member is unused.
+// Contains a coordinate for each pixel activated on screen.
 struct STAR
 {
 	short int x;
