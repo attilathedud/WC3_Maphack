@@ -10,7 +10,9 @@ By changing the push 0 instruction to push 0fh, we reveal all the squares on the
 Originally written 2010/02/16 by attilathedud.
 
 Injector:
+
 ![Injector Screenshot](screenshot_i.png?raw=true "Screenshot Injector")
 
 Hack:
+
 ![Hack Screenshot](screenshot_h.jpg?raw=true "Screenshot Hack")
