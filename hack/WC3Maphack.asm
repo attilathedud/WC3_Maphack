@@ -36,15 +36,15 @@ includelib \masm32\lib\user32.lib
 	main:
 		; Save the base pointer and load in the stack pointer
 		push ebp
-	    mov ebp,esp
+		mov ebp,esp
 
 		; Check to see if the dll is being loaded validly.
-	    mov eax,dword ptr ss:[ebp+0ch]
-	    cmp eax,1
-	    jnz @returnf
+		mov eax,dword ptr ss:[ebp+0ch]
+		cmp eax,1
+		jnz @returnf
 
 		; Save eax on the stack for restoring after we create our thread.
-	    push eax
+		push eax
 
 		; All of our functions reside in Game.dll which is dynamically loaded. Because of this, we
 		; have to get the base address of it and then add the offsets of the functions we need.
@@ -66,40 +66,40 @@ includelib \masm32\lib\user32.lib
 		; Allocate a section of memory to hold the old protection type for when we unprotect code.
 		; Store this memory in ebx.
 		push 40h
-        push 1000h
-        push 4h
-        push 0
-        call VirtualAlloc 	
+		push 1000h
+		push 4h
+		push 0
+		call VirtualAlloc 	
 		mov ebx,eax
 
 		; Unprotect the code that we intend to modify so that we can make changes to it.
 		push ebx
-        push 40h
-        push 5h
+		push 40h
+		push 5h
 		push hookbase
-        call VirtualProtect
+		call VirtualProtect
 
 		; Before the call to memset, create a codecave that will jmp to our hook function.
 		; e9h is the opcode to jmp, with the address of the jump being calculated by subtracting
 		; the address of the function to jump to from our current location.
-        mov eax,hookbase
-        mov byte ptr ds:[eax],0e9h
-        lea ecx,@hook
-        sub ecx,ori_map_draw
-        mov dword ptr ds:[eax+1],ecx
+		mov eax,hookbase
+		mov byte ptr ds:[eax],0e9h
+		lea ecx,@hook
+		sub ecx,ori_map_draw
+		mov dword ptr ds:[eax+1],ecx
 
 		; Reprotect the code we just modified.
-        push ebx
-        push 40h
-        push 5h
-        push hookbase
-       	call VirtualProtect 
+		push ebx
+		push 40h
+		push 5h
+		push hookbase
+		call VirtualProtect 
 
 		; Free the memory we allocated to hold the protection type.
-        push 4000h
-	    push 4h
-	    push ebx
-	    call VirtualFree 
+		push 4000h
+		push 4h
+		push ebx
+		call VirtualFree 
 
 		; Create a thread that will check for us pressing a hotkey
 		push 0
